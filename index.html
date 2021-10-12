@@ -32,7 +32,7 @@
           <h2>Índice</h2>
           <ul>
             <li>Presentación</li>
-            <li>Introducción a blockchains (Ethereum)</li>
+            <li>Introducción a blockchain (Ethereum)</li>
             <li>Smart Contracts</li>
             <li>Solidity vs. Python</li>
             <li>Ethereum / Solidity desde Python (Brownie)</li>
@@ -42,8 +42,96 @@
           <aside class="notes">
           </aside>
         </section>
-        <section>Slide 1</section>
-        <section>Slide 2</section>
+        <section>
+          <h2>Sobre mí</h2>
+          <ul>
+            <li class="fragment">2004: <a href="https://www.fierro.com.ar">Fierro</a> (Python)</li>
+            <li class="fragment">2013: <a href="https://radiocut.fm">RadioCut</a> (Python/Django)</li>
+            <li class="fragment">2021: <a href="https://ensuro.co">Ensuro</a> (Solidity)</li>
+            <li class="fragment">... y también Python!</li>
+          </ul>
+        </section>
+        <section>
+          <h2>¿Qué es la blockchain?</h2>
+          <img width="75%" src="computer.jpg" class="fragment"></img>
+        </section>
+        <section>
+          <h2>Características de las Blockchain</h2>
+          <ul>
+            <li class="fragment">Descentralizadas</li>
+            <li class="fragment">Consenso</li>
+            <li class="fragment">Pública</li>
+            <li class="fragment">Seguridad</li>
+            <li class="fragment">Inmutable</li>
+            <li class="fragment">Trazabilidad</li>
+            <li class="fragment">Open Source</li>
+            <li class="fragment"><b>Programable</b></li>
+          </ul>
+        </section>
+        <section>
+          <h2>Smart Contracts</h2>
+          <ul>
+            <li class="fragment">Inmutables</li>
+            <li class="fragment">Determinísticos</li>
+            <li class="fragment">Manejo de activos</li>
+          </ul>
+        </section>
+        <section>
+          <h2 style="text-transform: none;">Finanzas Descentralizadas (DeFi)</h2>
+          <ul>
+            <li>Dinero programable</li>
+            <li>90B en Total Value Locked</li>
+            <li><a href="https://defilatam.com/">DeFi Latam - https://defilatam.com/</a></li>
+            <li><a href="https://medium.com/@gnarvaja/defi-upgrade-de-las-finanzas-de-1-0-a-3-0-9bd83b29965d">Upgrade de las Finanzas de 1.0 a 3.0</a></li>
+          </ul>
+        </section>
+        <section>
+          <h2 style="text-transform: none;">Ethereum Virtual Machine (EVM)</h2>
+          <ul>
+            <li class="fragment">Turing Complete</li>
+            <li class="fragment">Solidity</li>
+            <li class="fragment">Vyper y otros</li>
+            <li class="fragment">Gas</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Solidity</h2>
+          <ul>
+            <li class="fragment">Estructurado</li>
+            <li class="fragment">Orientado a objetos</li>
+            <li class="fragment">Sintaxis ~ Javascript</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Solidity - Hello World</h2>
+          <pre style="width: 95%"><code data-trim contenteditable class="jjcode" style="font-size: 30px;">
+pragma solidity ^0.8.3;
+
+contract HelloWorld {
+    string public greet = "Hello World!";
+}
+</code></pre>
+        </section>
+        <section>
+          <h2>Solidity - Counter</h2>
+          <pre style="width: 95%"><code data-trim contenteditable class="jjcode" style="font-size: 18px;">
+contract Counter {
+    uint public count;
+
+    function get() public view returns (uint) {
+        return count;
+    }
+
+    function inc() public {
+        count += 1;
+    }
+
+    function dec() public {
+        count -= 1;
+    }
+}
+</code></pre>
+        </section>
       </div>
     </div>
 
@@ -57,7 +145,6 @@
       // - https://revealjs.com/config/
       Reveal.initialize({
         hash: true,
-
         // Learn about plugins: https://revealjs.com/plugins/
         plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
       });
