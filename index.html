@@ -97,6 +97,7 @@
         <section>
           <h2>Solidity</h2>
           <ul>
+            <li class="fragment">Compilado</li>
             <li class="fragment">Estructurado</li>
             <li class="fragment">Orientado a objetos</li>
             <li class="fragment">Sintaxis ~ Javascript</li>
@@ -131,6 +132,136 @@ contract Counter {
     }
 }
 </code></pre>
+        </section>
+        <section>
+          <h2>Tipos de Datos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Python</th>
+                <th>Solidity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>int</td>
+                <td>
+                  u?int{8..256}
+                </td>
+              </tr>
+              <tr>
+                <td>float / Decimal</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td>bool</td>
+                <td>bool</td>
+              </tr>
+              <tr>
+                <td>str</td>
+                <td>string</td>
+              </tr>
+              <tr>
+                <td>bytes</td>
+                <td>bytes{1..32}</td>
+              </tr>
+              <tr>
+                <td>❌</td>
+                <td>address</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <h2>Tipos de Datos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Python</th>
+                <th>Solidity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>dict {}</td>
+                <td>
+                  mapping(address =&gt; uint256)
+                </td>
+              </tr>
+              <tr>
+                <td>list []</td>
+                <td>uint[] <br/> address[2]</td>
+              </tr>
+              <tr>
+                <td>❌</td>
+                <td>enum Status {unknown, active, pending}</td>
+              </tr>
+              <tr>
+                <td>namedtuple</td>
+                <td>struct Foo { uint bar, address baz }</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <h2>Ubicación de Variables</h2>
+          <ul>
+            <li class="fragment"><b>storage</b>: persisten en la blockchain de una transacción a otra</li>
+            <li class="fragment"><b>memory</b>: existe durante la llamada a una función</li>
+            <li class="fragment"><b>calldata</b>: parámetro de funciones externas</li>
+            <li class="fragment"><b>const</b>: para definir constantes</li>
+            <li class="fragment"><b>immutable</b>: variables que solo pueden ser definidas en la construcción de un contrato</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Ubicación de Variables</h2>
+          <pre style="width: 95%"><code data-trim contenteditable class="jjcode" style="font-size: 18px;">
+contract DataLocations {
+    uint[] public arr;
+    mapping(uint =&gt; address) map;
+    struct MyStruct {
+        uint foo;
+    }
+    mapping(uint =&gt; MyStruct) myStructs;
+
+    function f() public {
+        // call _f with state variables
+        _f(arr, map, myStructs[1]);
+
+        // get a struct from a mapping
+        MyStruct storage myStruct = myStructs[1];
+        // create a struct in memory
+        MyStruct memory myMemStruct = MyStruct(0);
+    }
+
+    function _f(
+        uint[] storage _arr,
+        mapping(uint =&gt; address) storage _map,
+        MyStruct storage _myStruct
+    ) internal {
+        // do something with storage variables
+    }
+
+    // You can return memory variables
+    function g(uint[] memory _arr) public returns (uint[] memory) {
+        // do something with memory array
+    }
+
+    function h(uint[] calldata _arr) external {
+        // do something with calldata array
+    }
+}
+</code></pre>
+        </section>
+        <section>
+          <h2>Clases vs. Contratos</h2>
+          <ul>
+            <li class="fragment">Contratos deployados con código en una address Ethereum</li>
+            <li class="fragment">Herencia múltiple</li>
+            <li class="fragment">Interfaces</li>
+            <li class="fragment"><b>memory</b>: existe durante la llamada a una función</li>
+            <li class="fragment"><b>calldata</b>: parámetro de funciones externas</li>
+          </ul>
         </section>
       </div>
     </div>
