@@ -19,9 +19,6 @@
         <section>
           <h1>Smart Contracts con Solidity</h1>
           <h2>(para Pythonistas)</h2>
-          <!--blockquote style="width:95%">
-            “Reflexiones y experiencias en la transición desde una arquitectura <strong>monolítica</strong> a una de <strong>microservicios</strong>
-          </blockquote-->
           <p>
             <small>Por <a href="https://twitter.com/gnarvaja">Guillermo Narvaja</a> de <a href="https://ensuro.co">https://ensuro.co</a></small>
           </p>
@@ -54,6 +51,9 @@
         <section>
           <h2>¿Qué es la blockchain?</h2>
           <img width="75%" src="computer.jpg" class="fragment"></img>
+          <aside class="notes">
+            Una primera pregunta que nos debemos hacer, para entender en qué contexto se dá la programación de Smart Contracts, qué es una blockchain. Pueden encontrar diversas definiciones, a mí me parece interesante definirlo como algo simple y que todos conocemos, como una única computadora, con sus programas instalados, su capacidad de procesamiento, y su estado. Porqué si todos tenemos en nuestras casas computadoras, sería interesante tener UNA más? No es porque su capacidad de procesamiento sea muy grande, de hecho no lo es. Es porque tener una única compu (conceptualmente) en la cual todos confiamos en su funcionamiento, nos permite darle asignarle valor al estado que administra, ya sea este estado cuánto tiene cada uno de la moneda X, quién es el dueño que algo, e implementar programas que hagan cosas con esos activos digitales que tenemos representados en la blockchain, como subastas, préstamos, etc.
+          </aside>
         </section>
         <section>
           <h2>Características de las Blockchain</h2>
@@ -80,6 +80,7 @@
           <h2 style="text-transform: none;">Finanzas Descentralizadas (DeFi)</h2>
           <ul>
             <li>Dinero programable</li>
+            <li>Money Lego</li>
             <li>90B en Total Value Locked</li>
             <li><a href="https://defilatam.com/">DeFi Latam - https://defilatam.com/</a></li>
             <li><a href="https://medium.com/@gnarvaja/defi-upgrade-de-las-finanzas-de-1-0-a-3-0-9bd83b29965d">Upgrade de las Finanzas de 1.0 a 3.0</a></li>
@@ -98,7 +99,7 @@
           <h2>Solidity</h2>
           <ul>
             <li class="fragment">Compilado</li>
-            <li class="fragment">Estructurado</li>
+            <li class="fragment">Estructurado e Imperativo</li>
             <li class="fragment">Orientado a objetos</li>
             <li class="fragment">Sintaxis ~ Javascript</li>
           </ul>
@@ -172,6 +173,22 @@ contract Counter {
             </tbody>
           </table>
         </section>
+        <section>
+          <h2>Enteros y decimales</h2>
+          <pre style="width: 95%"><code data-trim contenteditable class="python" style="font-size: 18px;">
+&gt;&gt;&gt; 1 // 2
+0
+&gt;&gt;&gt; 1 * 10**18
+1000000000000000000
+&gt;&gt;&gt; 1 * 10**18 // 2
+500000000000000000
+&gt;&gt;&gt; 500000000000000000 // 1000000000000000000
+0
+&gt;&gt;&gt; 500000000000000000 * 10**18 // 1000000000000000000
+500000000000000000
+</code></pre>
+        </section>
+
         <section>
           <h2>Tipos de Datos</h2>
           <table>
@@ -256,13 +273,154 @@ contract DataLocations {
         <section>
           <h2>Clases vs. Contratos</h2>
           <ul>
-            <li class="fragment">Contratos deployados con código en una address Ethereum</li>
-            <li class="fragment">Herencia múltiple</li>
-            <li class="fragment">Interfaces</li>
-            <li class="fragment"><b>memory</b>: existe durante la llamada a una función</li>
-            <li class="fragment"><b>calldata</b>: parámetro de funciones externas</li>
+            <li>Contratos deployados con código en una address Ethereum</li>
+            <li>Herencia múltiple</li>
+            <li>Interfaces</li>
           </ul>
         </section>
+        <section>
+          <h2>Funciones - State Mutability</h2>
+          <ul>
+            <li><b>view</b>: puede LEER el estado pero no modificar</li>
+            <li><b>pure</b>: no lee ni modifica el estado</li>
+            <li><b>payable</b>: LEE y MODIFICA el estado, además puede recibir Ether</li>
+            <li><b>nonpayable</b>: LEE y MODIFICA el estado, no recibe Ether</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Funciones - Visibilidad</h2>
+          <ul>
+            <li><b>external</b>: externas (desde otros contratos o EOA)</li>
+            <li><b>internal</b>: solo puede ser llamada desde el contrato (o sus descendientes)</li>
+            <li><b>public</b>: externas (desde otros contratos o EOA) o internas</li>
+            <li><b>private</b>: solo puede ser llamada desde el contrato (no sus descendientes)</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Variables globales</h2>
+          <ul>
+            <li><b>msg.sender</b>: Quién está llamando a la función</li>
+            <li><b>msg.value</b>: Cantidad de Ether (en wei) enviado</li>
+            <li><b>block.number</b>: número de bloque</li>
+            <li><b>block.timestamp</b>: fecha/hora (en epoch seconds) del bloque</li>
+          </ul>
+        </section>
+        <section>
+          <h2>OwnedCounter</h2>
+          <pre style="width: 95%"><code data-trim contenteditable class="jjcode" style="font-size: 18px;">
+contract OwnedCounter {
+    uint public count;
+    address private _owner;
+
+    constructor() {
+      _owner = msg.sender;
+    }
+
+    function get() public view returns (uint) {
+        return count;
+    }
+
+    function inc() public {
+        require(msg.sender == _owner, "Not your counter!");
+        count += 1;
+    }
+
+    function dec() public {
+        require(msg.sender == _owner, "Not your counter!");
+        count -= 1;
+    }
+}
+</code></pre>
+        </section>
+        <section>
+          <h2>Modifiers</h2>
+          <pre style="width: 95%"><code data-trim contenteditable class="jjcode" style="font-size: 18px;">
+contract OwnedCounterV2 {
+    uint public count;
+    address private _owner;
+
+    constructor() {
+      _owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == _owner, "Caller is not the owner");
+        _
+    }
+
+    function inc() public onlyOwner {
+        count += 1;
+    }
+
+    function dec() public onlyOwner {
+        count -= 1;
+    }
+}
+</code></pre>
+        </section>
+        <section>
+          <h2>CounterV3 - Transacciones</h2>
+          <pre style="width: 95%"><code data-trim contenteditable class="jjcode" style="font-size: 18px;">
+contract OwnedCounterV2 {
+    uint public count;
+    address private _owner;
+
+    ...
+    function inc() public onlyOwner returns (uint) {
+        count += 1;
+        if (count &gt; 10)
+            revert("Counter too high! Rollback");
+        return count;
+    }
+}
+</code></pre>
+        </section>
+        <section>
+          <h2>Eventos</h2>
+          <pre style="width: 95%"><code data-trim contenteditable class="jjcode" style="font-size: 18px;">
+contract NFT {
+  // Mapping from token ID to owner address
+  mapping(uint256 =&gt; address) private _owners;
+
+  event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+
+  function transferFrom(address from, address to, uint256 tokenId) external {
+    require(_owners[tokenId] == msg.sender, "Not your NFT!");
+    _owners[tokenId] = to;
+    emit Transfer(from, to, tokenId);
+}
+</code></pre>
+        </section>
+        <section>
+          <h2>Brownie</h2>
+          <ul>
+            <li>https://eth-brownie.readthedocs.io/en/stable/</li>
+          </ul>
+        </section>
+        <section>
+          <h2>eth-prototype</h2>
+          <ul>
+            <li>https://github.com/gnarvaja/eth-prototype</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Reflexiones finales</h2>
+          <ul>
+            <li class="fragment">El ecosistema de desarrollo aún está en pañales</li>
+            <li class="fragment">Más aún en Python</li>
+            <li class="fragment">La comunidad también</li>
+            <li class="fragment">Lo más usado y maduro es Hardhat (Javascript) no brownie</li>
+            <li class="fragment">Los smart contracts son solo una parte (chica y estable, pero crítica) de una Dapp</li>
+            <li class="fragment">Info + Comunidad: https://t.me/SolidityLATAM</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Gracias!</h2>
+          <ul>
+            <li>https://twitter.com/gnarvaja</li>
+            <li>@gnarvaja en Telegram</li>
+            <li>@guillonarvaja en Discord</li>
+          </ul>
       </div>
     </div>
 
